@@ -16,13 +16,14 @@ from zipline.pipeline import Pipeline
 import pandas as pd
 from zipline.pipeline.factors.factor import CustomFactor
 
-class HDFLoader(implements(PipelineLoader)):
+class HDDataSource(implements(PipelineLoader)):
     """
     pipline loader from HDF file
     """
 
-    def __init__(self, dataset, data_dir, ):  # start_date, end_date
-        with HDFStore(data_dir) as store:
+    def __init__(self, dataset, data_path ):  # start_date, end_date
+
+        with HDFStore(data_path) as store:
             loaders = {}
             for column in dataset.columns:
                 dat = store.select(column.name).astype(
