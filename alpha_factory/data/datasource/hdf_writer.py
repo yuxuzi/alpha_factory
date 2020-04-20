@@ -181,6 +181,26 @@ def days_and_sids_for_fields(fields):
     return frames[0].index.values, frames[0].columns.values
 
 
+
+def check_sids_arrays_match(left, right, message):
+    """Check that two 1d arrays of sids are equal
+    """
+    if len(left) != len(right):
+        raise ValueError(
+            "{}:\nlen(left) ({}) != len(right) ({})".format(
+                message, len(left), len(right)
+            )
+        )
+
+    diff = (left != right)
+    if diff.any():
+        (bad_locs,) = np.where(diff)
+        raise ValueError(
+            "{}:\n Indices with differences: {}".format(message, bad_locs)
+        )
+
+
+
 class HDFWriter(object):
     """
     Class capable of writing daily OHLCV data to disk in a format that
